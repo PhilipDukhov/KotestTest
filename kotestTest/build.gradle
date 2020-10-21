@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+def versions = [
+        lint  : "27.2.0-alpha14",
+        kotest: "4.3.0",
+]
+
+def Libs = [
+        lint         : [
+                lint  : "com.android.tools.lint:lint:$versions.lint",
+                api   : "com.android.tools.lint:lint-api:$versions.lint",
+                checks: "com.android.tools.lint:lint-checks:$versions.lint",
+                tests : "com.android.tools.lint:lint-tests:$versions.lint",
+        ],
+        tests        : [
+                utils : "com.android.tools:testutils:$versions.lint",
+                kotest: [
+                        runner        : "io.kotest:kotest-runner-junit5:$versions.kotest",
+                        assertionsCore: "io.kotest:kotest-assertions-core:$versions.kotest",
+                ]
+        ],
+]
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testImplementation(Libs.lint.lint)
+    testImplementation(Libs.lint.tests)
+    testImplementation(Libs.tests.utils)
+    testImplementation(Libs.tests.kotest.runner)
+    testImplementation(Libs.tests.kotest.assertionsCore)
+}
